@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import CheckoutSteps from "../../common/CheckoutSteps";
 import {
   Col,
   Container,
@@ -10,9 +11,8 @@ import {
   Button,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import axios from "axios"; 
-import Loader from './../../common/Loader';
-import { CheckoutSteps } from "../../common";
+import axios from "axios";
+import Loader from "../../common/Loader";
 
 class PlaceOrder extends Component {
   constructor() {
@@ -25,9 +25,9 @@ class PlaceOrder extends Component {
     };
   }
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-  }
+  // componentDidMount() {
+  //   window.scrollTo(0, 0);
+  // }
 
   placeOrderHandler = () => {
     const cart = this.props.getCartData;
@@ -64,27 +64,27 @@ class PlaceOrder extends Component {
       });
   };
 
-  // componentDidMount() {
-  //   const cart = this.props.getCartData;
-  //   const itemsPrice = cart.cartItems
-  //     .reduce((acc, item) => acc + item.qty * item.price, 0)
-  //     .toFixed(2);
+  componentDidMount() {
+    const cart = this.props.getCartData;
+    const itemsPrice = cart.cartItems
+      .reduce((acc, item) => acc + item.qty * item.price, 0)
+      .toFixed(2);
 
-  //   const shippingPrice = itemsPrice > 100 ? 0 : 100;
-  //   const taxPrice = this.addDecimals(Number((0.05 * itemsPrice).toFixed(2)));
-  //   const totalPrice = (
-  //     Number(itemsPrice) +
-  //     Number(shippingPrice) +
-  //     Number(taxPrice)
-  //   ).toFixed(2);
+    const shippingPrice = itemsPrice > 100 ? 0 : 100;
+    const taxPrice = this.addDecimals(Number((0.05 * itemsPrice).toFixed(2)));
+    const totalPrice = (
+      Number(itemsPrice) +
+      Number(shippingPrice) +
+      Number(taxPrice)
+    ).toFixed(2);
 
-  //   this.setState({
-  //     taxPrice,
-  //     shippingPrice,
-  //     totalPrice,
-  //     itemsPrice,
-  //   });
-  // }
+    this.setState({
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+      itemsPrice,
+    });
+  }
 
   addDecimals = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -185,10 +185,10 @@ class PlaceOrder extends Component {
 
                 <ListGroup.Item>
                   <Button
-                    disabled={this.props.getLoginInfoData.userInfo.isAdmin &&  cart.cartItems.length === 0 }
+                    disabled={this.props.getLoginInfoData.userInfo.isAdmin}
                     type='button'
                     className='btn-block'
-                   
+                    // disabled={cart.cartItems.length === 0}
                     onClick={() => this.placeOrderHandler()}>
                     Place Order
                   </Button>
