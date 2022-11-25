@@ -91,6 +91,7 @@ class PlaceOrder extends Component {
   };
 
   render() {
+    
     const cart = this.props.getCartData;
     const { itemsPrice, shippingPrice, taxPrice, totalPrice } = this.state;
     if (!cart.cartItems) {
@@ -185,10 +186,9 @@ class PlaceOrder extends Component {
 
                 <ListGroup.Item>
                   <Button
-                    disabled={this.props.getLoginInfoData.userInfo.isAdmin}
+                    disabled={this.props.getLoginInfoData.userInfo.isAdmin && cart.cartItems.length === 0}
                     type='button'
                     className='btn-block'
-                    // disabled={cart.cartItems.length === 0}
                     onClick={() => this.placeOrderHandler()}>
                     Place Order
                   </Button>

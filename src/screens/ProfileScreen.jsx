@@ -166,7 +166,7 @@ class ProfileScreen extends Component {
 
                             <td>
                               <LinkContainer to={`order/${order._id}`}>
-                                <Button variant='light'>Details</Button>
+                                <Button variant='light'>Update</Button>
                               </LinkContainer>
                             </td>
                           </tr>

@@ -2,8 +2,7 @@ import React, {useEffect } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Button, Container, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { listOrders } from './../Redux/actions/orderActions';
-import { deleteUser } from './../Redux/actions/userActions';
+import { deleteOrder, listOrders } from './../Redux/actions/orderActions';
 import Loader from './../common/Loader';
 
 export default function OrderListScreen({ history }) {
@@ -30,12 +29,14 @@ export default function OrderListScreen({ history }) {
     
   }, [dispatch,userInfo,successDelete, history]);
   
-  const deleteUserHandler = (id) => {
+  const deleteOrderHandler = (id) => {
     if (window.confirm("Are you sure?")) {
-      dispatch(deleteUser(id));
+      dispatch(deleteOrder(id));
     }
     
-
+    setTimeout(() => {
+      window.location.reload();
+    }, 100);
   };
 
   return (
@@ -59,7 +60,7 @@ export default function OrderListScreen({ history }) {
             </tr>
           </thead>
           <tbody>
-            {orders === undefined ? (
+            {(orders === undefined ) ? (
               <tbody>
                 {/* <Button variant='light' onClick={window.location.reload()}>
                   <Loader />
@@ -107,7 +108,7 @@ export default function OrderListScreen({ history }) {
                         </LinkContainer>
 
                         <Button
-                            onClick={() => deleteUserHandler(order._id)}
+                            onClick={() => deleteOrderHandler(order._id)}
                           variant='danger'
                           className='btn-sm'>
                           <i className='fas fa-trash'></i>

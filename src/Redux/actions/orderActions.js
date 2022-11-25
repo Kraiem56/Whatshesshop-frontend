@@ -15,6 +15,7 @@ import {
   ORDER_PAY_FAIL,
   ORDER_PAY_REQUEST,
   ORDER_PAY_SUCCESS,
+  ORDER_DELETE_REQUEST,ORDER_DELETE_SUCCESS,ORDER_DELETE_FAIL
 } from "../constants/orderConstants";
 
 export const createOrder = (order) => async (dispatch, getState) => {
@@ -127,20 +128,16 @@ export const deliveredOrder = (orderId) => async (dispatch, getState) => {
       type: ORDER_DELIVERED_REQUEST,
     });
 
-    // const token = store.getState().userLogin.userInfo.token;
+    const token = store.getState().userLogin.userInfo.token;
 
-    // const config = {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // };
+    // eslint-disable-next-line no-unused-vars
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-    // const { data } = await axios.put(
-    //   `/api/orders/${orderId}/deliver`,
-    //   {},
-    //   config
-    // );
 
     dispatch({
       type: ORDER_DELIVERED_SUCCESS,
@@ -181,3 +178,25 @@ export const listOrders = () => async (dispatch) => {
     });
   }
 };
+
+export const deleteOrder = (orderId) => async (dispatch, getState) => {
+  dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
+  const token = store.getState().userLogin.userInfo.token;
+
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  try {
+    const { data } = axios.delete(`/api/orders/${orderId}`,config );
+    dispatch({ type: ORDER_DELETE_SUCCESS, payload: data });
+  } catch (error) {
+    const message =
+      error.response && error.response.data.message
+        ? error.response.data.message
+        : error.message;
+    dispatch({ type: ORDER_DELETE_FAIL, payload: message });
+  }
+};
+
